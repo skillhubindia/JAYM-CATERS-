@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> JAYM CATERS-Railway Cloud Kitchen</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* =======================
+       EASY THEME EDITS HERE
+       ======================= */
+    :root{
+      --brand:#d32f2f;     /* Red */
+      --accent:#ffca28;    /* Yellow */
+      --bg:#fffaf7;        /* Soft background */
+      --muted:#6c6c6c;     /* Muted text */
+      --card-shadow:0 6px 18px rgba(35,35,35,.08);
+      --radius:14px;
+      --container:1100px;
+    }
+    body{margin:0;font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:linear-gradient(180deg,#fff 0%,var(--bg) 100%);color:#111}
+
+    /* ===== Header / Nav ===== */
+    header{position:sticky;top:0;z-index:50;background:var(--brand);color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+    .nav{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 16px;max-width:var(--container);margin:0 auto}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px}
+    .logo img{height:44px;width:auto;border-radius:10px}
+    .logo small{display:block;font-weight:600;opacity:.95;line-height:1.1}
+    .nav a{color:#fff;text-decoration:none;font-weight:700;font-size:14px;opacity:.95}
+
+    /* ===== Layout helpers ===== */
+    .container{max-width:var(--container);margin:18px auto;padding:0 14px}
+    .section-title{display:flex;align-items:center;gap:8px;margin:12px 0}
+    .badge{background:var(--accent);padding:6px 10px;border-radius:999px;font-weight:800;color:#333;display:inline-block}
+
+    /* ===== Hero ===== */
+    .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:16px;align-items:center;background:linear-gradient(90deg,rgba(255,202,40,.08),rgba(211,47,47,.06));padding:18px;border-radius:var(--radius);box-shadow:var(--card-shadow)}
+    .hero h1{margin:0 0 8px 0;font-size:28px}
+    .small{font-size:13px;color:var(--muted)}
+    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .btn{background:var(--brand);color:#fff;padding:10px 14px;border-radius:12px;border:none;font-weight:800;cursor:pointer;box-shadow:0 6px 14px rgba(211,47,47,.14)}
+    .btn.secondary{background:transparent;color:var(--brand);border:2px solid var(--brand);box-shadow:none}
+
+    /* ===== Menu Grid ===== */
+    .menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+    .card{background:#fff;padding:10px;border-radius:12px;box-shadow:var(--card-shadow);display:flex;gap:10px;align-items:flex-start}
+    .food-img{width:84px;height:74px;border-radius:10px;overflow:hidden;flex-shrink:0;display:block;background:#f3f3f3}
+    .food-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .food-content{min-width:0}
+    .food-content h4{margin:0;font-size:15px;display:flex;align-items:center;gap:6px}
+    .veg-dot,.nonveg-dot{width:12px;height:12px;border-radius:2px;border:2px solid currentColor;display:inline-grid;place-items:center}
+    .veg-dot{color:#2e7d32}
+    .nonveg-dot{color:#b71c1c}
+    .veg-dot::before,.nonveg-dot::before{content:"";width:6px;height:6px;border-radius:1px;background:currentColor}
+    .desc{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.4}
+    .price-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+    .price{font-weight:900}
+    .add-btn{margin-left:auto;background:linear-gradient(90deg,#ff7043,var(--brand));border:none;padding:8px 10px;border-radius:10px;color:#fff;font-weight:800;cursor:pointer}
+
+    /* ===== Tabs (Veg/Non-Veg/Snacks/Drinks) ===== */
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+    .tab{padding:8px 12px;border-radius:999px;border:1.6px solid #eee;background:#fff;font-weight:800;cursor:pointer}
+    .tab.active{border-color:var(--brand);color:var(--brand);box-shadow:0 2px 10px rgba(211,47,47,.08)}
+
+    /* ===== Popular ===== */
+    .popular-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+
+    /* ===== Cart (bottom drawer on mobile) ===== */
+    .cart-fab{position:fixed;right:16px;bottom:16px;background:var(--brand);color:#fff;padding:12px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);cursor:pointer;display:flex;gap:8px;align-items:center;font-weight:800;z-index:40}
+    .cart-count{background:rgba(255,255,255,.15);padding:6px 8px;border-radius:999px;font-weight:900}
+
+    .drawer{position:fixed;left:0;right:0;bottom:-100%;background:#fff;border-top-left-radius:18px;border-top-right-radius:18px;box-shadow:0 -8px 40px rgba(0,0,0,.18);transition:bottom .26s ease;z-index:60}
+    .drawer.open{bottom:0}
+    .drawer-header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid #eee}
+    .drawer-body{padding:12px 14px;max-height:50vh;overflow:auto}
+
+    .cart-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+    .cart-row .qty{width:28px;text-align:center}
+    .cart-actions{display:flex;gap:8px;margin-top:10px}
+
+    /* ===== Order / Payment ===== */
+    .panel{background:#fff;padding:14px;border-radius:var(--radius);box-shadow:var(--card-shadow)}
+    label{display:block;font-size:13px;color:var(--muted);margin-top:10px}
+    input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #e8e8e8;margin-top:6px;font-size:14px}
+
+    .paid-note{font-size:12px;color:var(--muted)}
+    .qr{width:126px;height:126px;border-radius:10px;background:#fff;display:grid;place-items:center;border:1px dashed #eee}
+
+    footer{margin:28px 0 90px 0;padding-top:18px;border-top:1px solid #eee}
+
+    /* ===== Responsive ===== */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+    }
+    @media (max-width:600px){
+      .hero h1{font-size:22px}
+      .popular-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header>
+    <div class="nav">
+      <div class="logo">
+        <!-- Replace src with your logo PNG -->
+        <img src="jc.png" alt="RailMeal Express logo"/>
+        <div>
+           JAYM CATERS 🚂🍱
+          <small>Railway Cloud Kitchen</small>
+        </div>
+      </div>
+      <nav style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#order">Order</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="home">
+    <!-- ===== Hero ===== -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div>
+        <h1 id="hero-heading">Hot fresh meals to your train seat — right at your station</h1>
+        <p class="small">Enter your train number, coach & seat. We deliver at: <b>Solapur, Wadi, Tandur, Nalwar</b>.</p>
+        <div class="cta">
+          <button class="btn" onclick="scrollToEl('#menu')">Order Now</button>
+          <button class="btn secondary" onclick="openWhatsApp('pre')">Order on WhatsApp</button>
+          <span class="badge" title="First-day offer">FIRST DAY: 10% OFF (RAIL10)</span>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="panel" style="display:inline-block">
+          <div style="font-weight:900">Delivering Stations</div>
+          <div class="small">Solapur · Wadi · Tandur · Nalwar</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Highlights ===== -->
+    <section style="margin-top:16px">
+      <div class="section-title"><h2 style="margin:0">Popular Picks</h2><span class="small">Quick favourites</span></div>
+      <div id="popular" class="popular-grid"></div>
+    </section>
+
+    <!-- ===== Menu ===== -->
+    <section id="menu" style="margin-top:18px">
+      <div class="section-title"><h2 style="margin:0">Menu</h2><span class="small">Veg & Non‑Veg shown separately</span></div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="veg" onclick="switchTab('veg')">Veg</button>
+        <button class="tab" data-tab="nonveg" onclick="switchTab('nonveg')">Non‑Veg</button>
+        <button class="tab" data-tab="snacks" onclick="switchTab('snacks')">Snacks</button>
+        <button class="tab" data-tab="beverages" onclick="switchTab('beverages')">Tea / Coffee</button>
+      </div>
+
+      <!-- Editable image note -->
+      <p class="small" style="margin:8px 0">Tip: Replace each <code>img</code> <b>src</b> below with your own PNG/JPG (e.g. <code>images/veg/thali.png</code>). Keep sizes around 500×400 for crisp cards.</p>
+
+      <div id="grid-veg" class="menu-grid" role="tabpanel"></div>
+      <div id="grid-nonveg" class="menu-grid" role="tabpanel" hidden></div>
+      <div id="grid-snacks" class="menu-grid" role="tabpanel" hidden></div>
+      <div id="grid-beverages" class="menu-grid" role="tabpanel" hidden></div>
+    </section>
+
+    <!-- ===== Order / Payment ===== -->
+    <section id="order" style="margin-top:18px">
+      <div class="section-title"><h2 style="margin:0">Checkout</h2><span class="small">Fill your journey details</span></div>
+      <div class="panel">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <label for="trainNo">Train Number</label>
+            <input id="trainNo" placeholder="e.g., 12126" inputmode="numeric" pattern="[0-9]*">
+          </div>
+          <div>
+            <label for="coach">Coach & Seat</label>
+            <input id="coach" placeholder="e.g., S1/27">
+          </div>
+          <div>
+            <label for="station">Station (delivery)</label>
+            <select id="station">
+              <option value="" disabled selected>Select a station</option>
+              <option value="Solapur">Solapur</option>
+              <option value="Wadi">Wadi</option>
+              <option value="Tandur">Tandur</option>
+              <option value="Nalwar">Nalwar</option>
+            </select>
+          </div>
+          <div>
+            <label for="name">(Optional) Name</label>
+            <input id="name" placeholder="Passenger name">
+          </div>
+          <div>
+            <label for="phone">(Optional) WhatsApp Number</label>
+            <input id="phone" placeholder="+91 7xxxxxxxxx">
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:16px"><h3 style="margin:0">Payment</h3><span class="small">UPI / COD / Razorpay demo</span></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start">
+          <div class="panel" style="padding:10px">
+            <div style="font-weight:900">UPI</div>
+            <div class="small">Pay to <b id="upiId">railmeal@upi</b> or use deep link.</div>
+            <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+              <div class="qr" title="UPI QR (replace with your PNG)">
+                <!-- Replace this <img> with your real QR image file -->
+                <img id="upiQr" alt="UPI QR" src="images/pay/upi-qr-placeholder.png" style="max-width:100%;max-height:100%;object-fit:contain"/>
+              </div>
+              <div style="flex:1">
+                <button class="btn secondary" onclick="payWithUPI()">Pay Now (UPI Link)</button>
+                <p class="paid-note">If link doesn't open your UPI app, scan the QR or pay manually to the UPI ID.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="padding:10px">
+            <div style="font-weight:900">Other Options</div>
+            <div class="cart-actions" style="margin-top:8px">
+              <button class="btn" onclick="checkout('cod')">Cash on Delivery</button>
+              <button class="btn secondary" onclick="razorpayDemo()">Razorpay (Demo)</button>
+            </div>
+            <p class="small" style="margin-top:8px">Razorpay demo uses a placeholder. For production, integrate their Checkout with server‑side <code>order_id</code>. See code comments.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" onclick="checkout('whatsapp')">Send Order to WhatsApp</button>
+          <button class="btn secondary" onclick="scrollToEl('#menu')">Add More Items</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="contact" style="margin-top:18px">
+      <div class="section-title"><h2 style="margin:0">Contact & Support</h2></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="panel">
+          <div style="font-weight:900">Phone</div>
+          <div class="small" id="supportPhone">+91 70207 69615</div>
+          <div style="height:10px"></div>
+          <div style="font-weight:900">Email</div>
+          <div class="small" id="supportEmail">hello@railmeal.example</div>
+          <div style="height:10px"></div>
+          <button class="btn" style="background:#25D366" onclick="openWhatsApp('pre')">WhatsApp Us</button>
+        </div>
+        <div class="panel">
+          <div style="font-weight:900">Delivery Areas</div>
+          <div class="small">We deliver at these stations only: <b>Solapur, Wadi, Tandur, Nalwar</b>.</div>
+          <div style="height:8px"></div>
+          <div style="font-weight:900">Pickup</div>
+          <div class="small">Prefer pickup? Type "Pickup" in WhatsApp or COD notes after placing order.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <div><strong>RailMeal Express</strong> — Railway Cloud Kitchen · Delivering to train passengers
+          <div class="small" style="margin-top:6px">Phone: <span id="footPhone">+91 70207 69615</span> · Email: <span id="footEmail">hello@railmeal.example</span></div>
+        </div>
+        <div class="small">© <span id="year"></span> RailMeal Express</div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ===== Floating Cart Button ===== -->
+  <button class="cart-fab" id="openCart" onclick="toggleDrawer(true)">
+    🛒 <span class="cart-count" id="floatCount">0</span>
+    <span>View Cart</span>
+  </button>
+
+  <!-- ===== Cart Drawer ===== -->
+  <aside class="drawer" id="cartDrawer" aria-labelledby="cartHeading" aria-hidden="true">
+    <div class="drawer-header">
+      <strong id="cartHeading">Your Cart</strong>
+      <div style="margin-left:auto"></div>
+      <button class="btn secondary" onclick="toggleDrawer(false)">Close</button>
+    </div>
+    <div class="drawer-body">
+      <div id="cartItems"></div>
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+        <div style="font-weight:900">Total:</div>
+        <div id="totalPrice" style="font-weight:900;margin-left:auto">₹0</div>
+      </div>
+      <div class="cart-actions">
+        <button class="btn" onclick="scrollToEl('#order');toggleDrawer(false)">Checkout</button>
+        <button class="btn secondary" onclick="clearCart()">Clear Cart</button>
+      </div>
+    </div>
+  </aside>
+
+  <script>
+  /* ======================================================
+     CONFIG — Edit these values to customize your storefront
+     ====================================================== */
+  const CONFIG = {
+    BRAND: "RailMeal Express",
+    UPI_ID: "railmeal@upi",            // <-- change to your UPI ID
+    PHONE: "+917020769615",            // <-- WhatsApp phone (digits or +91...)
+    EMAIL: "hello@railmeal.example",    // <-- support email
+    CURRENCY_SYMBOL: "₹",
+    OFFER_CODE: "RAIL10",
+    OFFER_TEXT: "FIRST DAY: 10% OFF",
+  };
+
+  /* ======================================================
+     MENU ITEMS — Add/Remove items here. Replace 'img' paths
+     with your own PNG/JPG files for Veg & Non‑Veg sections.
+     ====================================================== */
+  const ITEMS = [
+    // --- Veg ---
+    { id:"veg-thali", title:"Veg Thali", price:129, cat:"veg", img:"vt.png", desc:"Homestyle thali: dal, sabzi & rice." },
+    { id:"paneer-wrap", title:"Paneer Bhurji Wrap", price:89, cat:"veg", img:"pbw.png", desc:"Spicy paneer, soft wrap." },
+    { id:"idli-sambar", title:"2 Idli + Sambar", price:49, cat:"veg", img:"is.png", desc:"Soft idlis with hot sambar." },
+    { id:"veg-biryani", title:"Veg Biryani", price:139, cat:"veg", img:"vb.png", desc:"Aromatic biryani with raita." },
+    { id:"samosa-2", title:"Samosa (2pc)", price:30, cat:"snacks", img:"s2.png", desc:"Crispy & hot." },
+
+    // --- Non‑Veg ---
+    { id:"nonveg-thali", title:"Non‑Veg Thali", price:179, cat:"nonveg", img:"nvt.png", desc:"Chicken curry, rice & sides." },
+    { id:"chicken-biryani", title:"Chicken Biryani", price:169, cat:"nonveg", img:"cb.png", desc:"Large portion with gravy." },
+
+    // --- Beverages ---
+    { id:"tea", title:"Cutting Tea", price:15, cat:"beverages", img:"ct.png", desc:"Hot masala tea." },
+    { id:"coffee", title:"Filter Coffee", price:25, cat:"beverages", img:"fc.png", desc:"South Indian filter coffee." },
+  ];
+
+  // ========== INIT STATIC FIELDS ==========
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('upiId').textContent = CONFIG.UPI_ID;
+  document.getElementById('supportPhone').textContent = CONFIG.PHONE.replace(/^\+?/, '+');
+  document.getElementById('supportEmail').textContent = CONFIG.EMAIL;
+  document.getElementById('footPhone').textContent = CONFIG.PHONE.replace(/^\+?/, '+');
+  document.getElementById('footEmail').textContent = CONFIG.EMAIL;
+
+  // ========== MENU RENDERING ==========
+  const grids = {
+    veg: document.getElementById('grid-veg'),
+    nonveg: document.getElementById('grid-nonveg'),
+    snacks: document.getElementById('grid-snacks'),
+    beverages: document.getElementById('grid-beverages'),
+  };
+
+  function makeBadge(cat){
+    if(cat==='veg') return '<span class="veg-dot" title="Veg"></span>';
+    if(cat==='nonveg') return '<span class="nonveg-dot" title="Non‑Veg"></span>';
+    return '';
+  }
+
+  function cardHTML(item){
+    return `
+      <div class="card">
+        <a class="food-img" href="#" onclick="event.preventDefault()" aria-label="${item.title}">
+          <img src="${item.img}" alt="${item.title}">
+        </a>
+        <div class="food-content">
+          <h4>${item.title} ${makeBadge(item.cat)}</h4>
+          <div class="desc">${item.desc||''}</div>
+          <div class="price-row">
+            <div class="price">${CONFIG.CURRENCY_SYMBOL}${item.price}</div>
+            <button class="add-btn" onclick="addToCart('${item.id}')">Add</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderMenu(){
+    Object.values(grids).forEach(g=>g.innerHTML='');
+    ITEMS.forEach(it=>{
+      const el = document.createElement('div');
+      el.innerHTML = cardHTML(it);
+      const target = (it.cat==='veg')?grids.veg:(it.cat==='nonveg')?grids.nonveg:(it.cat==='snacks')?grids.snacks:grids.beverages;
+      target.appendChild(el.firstElementChild);
+    });
+
+    // Popular = first 4
+    const popular = document.getElementById('popular');
+    popular.innerHTML = '';
+    ITEMS.slice(0,4).forEach(it=>{
+      const c = document.createElement('div');
+      c.className='card';
+      c.style.alignItems='center';
+      c.innerHTML = `
+        <div class="food-img" style="width:60px;height:50px"><img src="${it.img}" alt="${it.title}"></div>
+        <div style="min-width:0">
+          <div style="font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${it.title}</div>
+          <div class="small">${CONFIG.CURRENCY_SYMBOL}${it.price}</div>
+        </div>`;
+      popular.appendChild(c);
+    });
+  }
+
+  renderMenu();
+
+  function switchTab(tab){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+    Object.entries(grids).forEach(([k,el])=>{ el.hidden = (k!==tab); });
+    scrollToEl('#menu');
+  }
+
+  // ========== CART ==========
+  let CART = JSON.parse(localStorage.getItem('railmeal_cart') || '{}'); // id -> qty
+
+  function saveCart(){ localStorage.setItem('railmeal_cart', JSON.stringify(CART)); renderCart(); }
+  function addToCart(id){ CART[id]=(CART[id]||0)+1; saveCart(); pulseFab(); }
+  function removeFromCart(id){ if(!CART[id]) return; CART[id]--; if(CART[id]<=0) delete CART[id]; saveCart(); }
+  function clearCart(){ CART={}; saveCart(); }
+  function cartQuantity(){ return Object.values(CART).reduce((a,b)=>a+b,0); }
+  function cartTotal(){ return Object.entries(CART).reduce((sum,[id,qty])=>{ const item=ITEMS.find(i=>i.id===id); return sum + (item? item.price*qty : 0); },0); }
+
+  function renderCart(){
+    const wrap = document.getElementById('cartItems');
+    wrap.innerHTML='';
+    if(Object.keys(CART).length===0){
+      wrap.innerHTML = '<div class="small">Your cart is empty. Add some tasty food!</div>';
+    } else {
+      for(const id in CART){
+        const it = ITEMS.find(i=>i.id===id); if(!it) continue;
+        const row = document.createElement('div');
+        row.className='cart-row';
+        row.innerHTML = `
+          <div style="flex:1">
+            <div style="font-weight:900">${it.title}</div>
+            <div class="small">${CONFIG.CURRENCY_SYMBOL}${it.price} × ${CART[id]}</div>
+          </div>
+          <button class="add-btn" style="padding:6px 9px" onclick="removeFromCart('${id}')">-</button>
+          <div class="qty">${CART[id]}</div>
+          <button class="add-btn" style="padding:6px 9px" onclick="addToCart('${id}')">+</button>`;
+        wrap.appendChild(row);
+      }
+    }
+    document.getElementById('floatCount').textContent = cartQuantity();
+    document.getElementById('totalPrice').textContent = CONFIG.CURRENCY_SYMBOL + cartTotal();
+  }
+  renderCart();
+
+  function pulseFab(){ const b=document.getElementById('openCart'); b.style.transform='translateY(-6px)'; setTimeout(()=>b.style.transform='translateY(0)', 220); }
+  function toggleDrawer(open){ const d=document.getElementById('cartDrawer'); d.classList.toggle('open', !!open); d.setAttribute('aria-hidden', open? 'false':'true'); }
+
+  // ========== ORDER / PAY ==========
+  function getOrderSummary(){
+    const items = Object.entries(CART).map(([id,qty])=>{ const it=ITEMS.find(x=>x.id===id); return it? {title:it.title, qty, price:it.price, total:it.price*qty} : null; }).filter(Boolean);
+    const total = cartTotal();
+    return { items, total };
+  }
+
+  function checkout(mode){
+    if(cartQuantity()===0){ alert('Your cart is empty — please add items.'); return; }
+
+    const trainNo = document.getElementById('trainNo').value.trim();
+    const station = document.getElementById('station').value;
+    const coach   = document.getElementById('coach').value.trim();
+    const name    = document.getElementById('name').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
+
+    if(!trainNo || !station || !coach){ alert('Please fill Train Number, Station, and Coach/Seat.'); scrollToEl('#order'); return; }
+
+    const order = getOrderSummary();
+    const orderText = [
+      `*${CONFIG.BRAND} — New Order*`,
+      `Train: ${trainNo}`,
+      `Station: ${station}`,
+      `Coach/Seat: ${coach}`,
+      name? `Name: ${name}`: null,
+      phone? `Phone: ${phone}`: null,
+      `Items:`,
+      ...order.items.map(it=>`${it.qty} × ${it.title} — ${CONFIG.CURRENCY_SYMBOL}${it.total}`),
+      `Total: ${CONFIG.CURRENCY_SYMBOL}${order.total}`,
+      `Offer: ${CONFIG.OFFER_CODE} (if applicable)`
+    ].filter(Boolean).join('\n');
+
+    if(mode==='whatsapp'){ openWhatsApp(orderText); return; }
+    if(mode==='cod'){ alert('Order placed as Cash on Delivery. We\'ll WhatsApp you shortly.'); copyToClipboard(orderText); clearCart(); return; }
+    if(mode==='upi'){ payWithUPI(); return; }
+  }
+
+  function payWithUPI(){
+    const amount = cartTotal();
+    if(amount<=0){ alert('Add items to cart first.'); return; }
+    const payee = encodeURIComponent(CONFIG.UPI_ID);
+    const pname = encodeURIComponent(CONFIG.BRAND + ' order');
+    const pnote = encodeURIComponent('Order via website');
+    const url = `upi://pay?pa=${payee}&pn=${pname}&tn=${pnote}&am=${amount}&cu=INR`;
+    window.location.href = url; // Opens UPI app on many mobiles
+  }
+
+  function razorpayDemo(){
+    alert('Razorpay Demo: In production, create an order on your server and pass order_id to Razorpay Checkout. See code comments for steps.');
+    /*
+      === Razorpay Production Steps ===
+      1) On your server, call Razorpay Orders API to create an order for amount (in paise).
+      2) Get back { id: 'order_XXXX' } as order_id.
+      3) On client, load Razorpay Checkout and call new Razorpay({ key, amount, currency, name: CONFIG.BRAND, order_id, ... }).open();
+      Docs: https://razorpay.com/docs/payments/checkout/standard/
+    */
+  }
+
+  function openWhatsApp(pre){
+    const waNumber = CONFIG.PHONE.replace(/\D/g,'');
+    const order = getOrderSummary();
+    let message;
+    if(pre==='pre'){
+      message = `Hi! I want to place an order. My train no: ___, station: ___, coach/seat: ___`;
+    }else if(typeof pre==='string'){
+      message = pre;
+    }else{
+      const items = order.items.map(it=>`${it.qty}x ${it.title}`).join(', ');
+      message = `Hi, I want to place an order:\nItems: ${items}\nTotal: ${CONFIG.CURRENCY_SYMBOL}${order.total}\nTrain: ${document.getElementById('trainNo').value||'N/A'}\nStation: ${document.getElementById('station').value||'N/A'}\nCoach/Seat: ${document.getElementById('coach').value||'N/A'}`;
+    }
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url,'_blank');
+  }
+
+  // ========== UTIL ==========
+  function copyToClipboard(text){ navigator.clipboard?.writeText(text).catch(()=>{}); }
+  function scrollToEl(sel){ document.querySelector(sel)?.scrollIntoView({behavior:'smooth'}); }
+
+  // Prefill for quick demo
+  document.getElementById('trainNo').value = '12126';
+  document.getElementById('coach').value = 'S1/27';
+
+  </script>
+</body>
+</html>
